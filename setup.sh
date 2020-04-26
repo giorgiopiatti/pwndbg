@@ -47,6 +47,15 @@ install_zypper() {
     fi
 }
 
+install_kali() {
+    sudo apt-get update || true
+    sudo apt-get -y install gdb python3-dev python3-pip libglib2.0-dev libc6-dbg
+
+    if uname -m | grep x86_64 > /dev/null; then
+        sudo apt-get -y install libc6-dbg:i386 || true
+    fi
+}
+
 PYTHON=''
 INSTALLFLAGS=''
 
@@ -84,6 +93,9 @@ if linux; then
             echo " - https://www.archlinux.org/packages/community/any/pwndbg/"
             echo " - https://aur.archlinux.org/packages/pwndbg-git/"
             exit 1
+            ;;
+        "kali")
+            install_kali
             ;;
         *) # we can add more install command for each distros.
             echo "\"$distro\" is not supported distro. Will search for 'apt' or 'dnf' package managers."
